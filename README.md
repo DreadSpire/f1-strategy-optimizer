@@ -28,16 +28,16 @@ This project uses **Dynamic Programming** to navigate the massive decision tree 
    ```bash
    git clone [https://github.com/yourusername/f1-strategy-optimizer.git](https://github.com/yourusername/f1-strategy-optimizer.git)
    cd f1-strategy-optimizer
+ 
+ 
+ 
+ py -m venv venv
+ .\venv\Scripts\activate
 
 
 
-   py -m venv venv
-.\venv\Scripts\activate
+ pip install fastf1 matplotlib
 
 
-
-pip install fastf1 matplotlib
-
-
-
-py main.py --laps 30 --pit 18.0 --cliff 0.08
+**to run the code**
+ eg:- py main.py --gp Monaco --year 2024 --laps 78 --pit 20.0 --cliff 0.03

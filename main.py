@@ -4,33 +4,27 @@ from src.visualizer import plot_strategy
 from src.feeder import load_race_profiles
 
 def main():
-    pr = argparse.ArgumentParser()
-    pr.add_argument('--laps', type=int, default=52)
-    pr.add_argument('--pit', type=float, default=22.0)
-    pr.add_argument('--cliff', type=float, default=0.05)
+    pr = argparse.ArgumentParser(description="F1 Race Strategy Optimizer")
+    pr.add_argument('--laps', type=int, default=52, help="Total race laps")
+    pr.add_argument('--pit', type=float, default=22.0, help="Time lost in pit lane (s)")
+    pr.add_argument('--cliff', type=float, default=0.05, help="Tire cliff penalty multiplier")
+    pr.add_argument('--gp', type=str, default='Silverstone', help="Grand Prix name")
+    pr.add_argument('--year', type=int, default=2023, help="Season year")
     
     a = pr.parse_args()
     
-    l = a.laps
-    p = a.pit
-    c = a.cliff
+    print(f"--- Strategy for {a.gp} {a.year} ---")
+    print(f"Laps: {a.laps} | Pit Loss: {a.pit}s | Cliff: {a.cliff}")
     
-    print(f"Laps: {l} | Pit Loss: {p}s | Cliff: {c}")
+    # Ingest telemetry based on CLI arguments
+    tp = load_race_profiles(a.year, a.gp, 'VER')
     
-    tp = load_race_profiles(2023, 'Silverstone', 'VER')
+    # Run optimizer with the new cliff value
+    tt, st, pt = optimize_strategy(a.laps, a.pit, tp, a.cliff)
     
-    tt, st, pt = optimize_strategy(l, p, tp, c)
+    print(f"Optimal Total Time: {tt:.2f}s")
+    print(f"Start Compound: {st}")
     
-    print(f"Time: {tt:.2f}s")
-    print(f"Start: {st}")
-    
-    ps = [i for i, x in enumerate(pt) if x[0] == 'Make Pit Stop']
-    if ps:
-        for x in ps:
-            print(f" -> Pit Lap {x + 1}")
-    else:
-        print(" -> 0 stops")
-        
     plot_strategy(pt, tt)
 
 if __name__ == "__main__":
