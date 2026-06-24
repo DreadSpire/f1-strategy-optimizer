@@ -38,6 +38,8 @@ This project uses **Dynamic Programming** to navigate the massive decision tree 
 
  pip install fastf1 matplotlib
 
+## Run 
 
 **to run the code**
+```bash
  eg:- py main.py --gp Monaco --year 2024 --laps 78 --pit 20.0 --cliff 0.03
